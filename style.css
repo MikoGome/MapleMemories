@@ -1,0 +1,22 @@
+.char {
+  position: absolute;
+  text-align: center;
+  cursor: url('https://res.cloudinary.com/miko2/raw/upload/v1657492283/aero_arrow_nurzij.cur'), grab;
+}
+
+.move-cursor {
+  cursor: url('https://res.cloudinary.com/miko2/raw/upload/v1657492328/aero_move_kusjof.cur'), grabbing;
+}
+
+.sprite {
+  height: 8rem;
+}
+
+.name {
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  top: -0.5rem;
+  padding: 0.25rem 0.25rem;
+  font-family: Arial, Helvetica, sans-serif;
+}
