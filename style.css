@@ -8,6 +8,8 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
+
+  user-select: none;
 }
 
 .move-cursor {
@@ -39,6 +41,7 @@
 .falling-rotation {
   animation-name: falling-rotation;
   animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
 }
 
 @keyframes falling-rotation {
@@ -49,6 +52,7 @@
 .falling-rotation-right {
   animation-name: falling-rotation-right;
   animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
 }
 
 @keyframes falling-rotation-right {

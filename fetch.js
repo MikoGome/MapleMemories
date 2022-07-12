@@ -42,7 +42,9 @@ function fetchPose(mapler, info, faceEmote, pose) {
       mapler.faceEmote = faceEmote;
       mapler.pose = pose;
       console.log(pose, faceEmote);
-      if(mapler.sprite) return;
+      if(mapler.sprite) {
+        return;
+      }
       const char = document.createElement('div');
       char.classList.add('char');
       const sprite = mapler.sprite = document.createElement('img');
@@ -61,6 +63,7 @@ function fetchPose(mapler, info, faceEmote, pose) {
       char.append(sprite);
       char.append(name);
       addDrag(char, mapler);
+      addRemove(char);
 
       mapler.char = char;
       mapler.sprite = sprite;

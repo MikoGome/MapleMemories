@@ -1,7 +1,7 @@
 const url = 'https://api.maplestory.net/character/render';
 let zIdx= 10000;
 
-const ground = '50px';
+const ground = '10px';
 
 /*
 const body = {

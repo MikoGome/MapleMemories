@@ -4,17 +4,15 @@ function addDrag(target, mapler) {
   let y = null;
   let x2 = null;
   let y2 = null;
+  let floating = false;
 
   target.addEventListener("mousedown", (event) => {
+    floating = true;
     zIdx++;
     target.style.zIndex = zIdx;
-    console.log('z-index', target.style.zIndex)
     x = event.pageX;
     y = event.pageY;
     drag = target;
-    drag.classList.remove('transition-bottom');
-    drag.classList.remove('falling-rotation');
-    drag.classList.remove('falling-rotation-right');
     drag.style.transitionDuration = null;
     drag.style.animationDuration = null;
     target.style.cursor = "url('https://res.cloudinary.com/miko2/raw/upload/v1657492328/aero_move_kusjof.cur'), grabbing"
@@ -34,6 +32,8 @@ function addDrag(target, mapler) {
   });
 
   target.addEventListener("mouseup", () => {
+    floating = false;
+    mapler.changeEmote(['cry', 'angry']);
     target.style.cursor = "url('https://res.cloudinary.com/miko2/raw/upload/v1657492283/aero_arrow_nurzij.cur'), grab";
     const duration = parseInt(drag.style.bottom) * 2;
     drag.style.transitionDuration = duration + 'ms';
@@ -47,17 +47,37 @@ function addDrag(target, mapler) {
     drag.style.bottom = ground;
     drag = null;
     setTimeout(() => {
+      observer.observe(target, {attributes: true})
+      console.log('target', target);
+      target.classList.remove('transition-bottom');
+      target.classList.remove('falling-rotation');
+      target.classList.remove('falling-rotation-right');
       mapler.changeBoth(['hit', 'angry', 'pain'], 'lyingDown');
       setTimeout(() => {
-        mapler.changeBoth(undefined, 'alert');
+        if(floating) return;
+        mapler.changeBoth(undefined, 'alert'); //goes off when i'm holding mapler
         makeAlive(mapler);
       }, Math.floor(Math.random() * 5000) + 3000);
     }, duration - 100);
+    
   });
 }
 
-function addFlip(target) {
-  target.addEventListener("dblclick", (e) => {
-    target.remove();
+const mutationList = [];
+
+const observer = new MutationObserver((mutations) => {
+  for(const mutation of mutations) {
+    if(mutation.type === 'attributes') {
+      console.log('attributes changed');
+    }
+  }
+});
+
+
+
+function addRemove(target) {
+  target.addEventListener("mousedown", (e) => {
+    console.log('ctrl', e.ctrKey)
+    if(e.ctrlKey) target.remove();
   })
 }

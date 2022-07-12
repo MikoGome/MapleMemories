@@ -41,6 +41,8 @@ class Mapler {
     this.faceFrame = 0;
     this.poseFrame = 0;
     this.lifeRef = null;
+    this.faceEmote = null;
+    this.pose = null;
     this.content = {};
     fetchPose(this, this.body, 'default', 'jumping');
     makeAlive(this);
@@ -67,11 +69,13 @@ class Mapler {
     const randEmote = emote || emotes[Math.floor(Math.random() * emotes.length)];
     this.poseFrame = 0;
     this.faceFrame = 0;
+
     fetchPose(this, this.body, randEmote, randPose);
   }
 
   delife() {
     clearTimeout(this.lifeRef);
+    this.lifeRef = null;
   }
 
   animate(target) {
