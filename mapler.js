@@ -3,6 +3,8 @@ const commonPoses = [
   'alert',
   'sitting',
   'walkingOneHanded',
+  'walkingOneHanded',
+  'walkingOneHanded',
 ]
 
 const commonEmotes = [
@@ -107,6 +109,13 @@ class Mapler {
     setInterval(() => {
       const poseArr = this.content[this.faceEmote][this.pose];
       const faceEmoteArr = this.content[this.faceEmote];
+      if(this.pose === 'walkingOneHanded') {
+        this.char.style.transitionDuration = '400ms';
+        this.char.style.transitionTimingFunction = 'linear';
+      } else {
+        this.char.style.transitionDuration = null;
+        this.char.style.transitionTimingFunction = null;
+      }
       if(['standingOneHanded', 'alert', 'flying'].includes(this.pose)) {
         if(this.poseFrame + 1 >= poseArr.length) {
           poseIncreasing = false;
@@ -125,7 +134,7 @@ class Mapler {
       }
       if(this.pose === 'walkingOneHanded') {
         const pos = parseInt(this.char.style.left);
-        const speed = 10;
+        const speed = 30;
         if(this.right) {
           this.char.style.left = pos + speed + 'px';
         } else {

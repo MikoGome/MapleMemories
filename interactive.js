@@ -13,8 +13,6 @@ function addDrag(target, mapler) {
     x = event.pageX;
     y = event.pageY;
     drag = target;
-    drag.style.transitionDuration = null;
-    drag.style.animationDuration = null;
     target.style.cursor = "url('https://res.cloudinary.com/miko2/raw/upload/v1657492328/aero_move_kusjof.cur'), grabbing"
     mapler.delife();
     mapler.changeBoth(['cry', 'angry', 'bewildered'], 'flying');
@@ -44,15 +42,19 @@ function addDrag(target, mapler) {
       drag.classList.add('falling-rotation');
     }
     drag.style.bottom = ground;
-    drag.onanimationend = () => {
+    const sprite = drag.firstChild;
+    drag.onanimationend = (e) => {
+      if(e.currentTarget !== e.target) return;
+      console.log('animation end');
       mapler.changeBoth(['hit', 'angry', 'pain'], 'lyingDown');
+      target.style.animationDuration = null;
       recoverRef = setTimeout(() => {
         mapler.changeBoth(undefined, 'alert'); 
         makeAlive(mapler);
       }, Math.floor(Math.random() * 5000) + 3000);
       target.onanimationend = null;
     }
-    const sprite = drag.firstChild;
+    
     sprite.onload = () => {
       if(
         mapler.content.hit.lyingDown[0] === sprite.getAttribute('src') ||
@@ -63,7 +65,8 @@ function addDrag(target, mapler) {
         target.classList.remove('falling-rotation');
         target.classList.remove('falling-rotation-right');
         sprite.classList.add('damage');
-        sprite.onanimationend = () => {
+        sprite.onanimationend = (e) => {
+          if(e.currentTarget !== e.target) return;
           sprite.classList.remove('damage');
           sprite.onanimationend = null;
         }
@@ -71,6 +74,7 @@ function addDrag(target, mapler) {
     }
     drag.ontransitionend = () => {
       target.classList.remove('transition-bottom');
+      target.style.transitionDuration = null;
       target.ontransitionend = null;
     }
     drag = null;
