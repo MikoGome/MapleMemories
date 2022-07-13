@@ -63,7 +63,6 @@ class Mapler {
     this.faceEmote = null;
     this.pose = null;
     this.content = {};
-    this.intervalRef = null;
     fetchPose(this, this.body, 'default', 'jumping');
     for(const emote of ['hit', 'angry', 'pain']) {
       justFetch(this, this.body, emote, 'lyingDown');
@@ -107,59 +106,65 @@ class Mapler {
 
   animate(target) {
     let poseIncreasing = true;
-    let poseFps = 2.5;
     let now = Date.now();
-    let then = null;
+    let poseThen = now;
+    let moveThen = now;
+    const poseFps = 1000/4;
+    const fps = 1000 / 120;
+
     const animation = () => {
+      now = Date.now();
       console.log('test3');
       const poseArr = this.content[this.faceEmote][this.pose];
-      const faceEmoteArr = this.content[this.faceEmote];
-      if(this.pose === 'walkingOneHanded') {
-        this.char.style.transitionDuration = '400ms';
-        this.char.style.transitionTimingFunction = 'linear';
-      } else {
-        this.char.style.transitionDuration = null;
-        this.char.style.transitionTimingFunction = null;
-      }
-      if(['standingOneHanded', 'alert', 'flying'].includes(this.pose)) {
-        if(this.poseFrame + 1 >= poseArr.length) {
-          poseIncreasing = false;
-        } else if(this.poseFrame - 1 < 0) {
-          poseIncreasing = true;
-        }
-    
-        if(poseIncreasing) {
+      if(poseThen !== null && now - poseThen > poseFps) {
+        const faceEmoteArr = this.content[this.faceEmote];
+
+        if(['standingOneHanded', 'alert', 'flying'].includes(this.pose)) {
+          if(this.poseFrame + 1 >= poseArr.length) {
+            poseIncreasing = false;
+          } else if(this.poseFrame - 1 < 0) {
+            poseIncreasing = true;
+          }
+      
+          if(poseIncreasing) {
+            this.poseFrame++;
+          } else {
+            this.poseFrame--;
+          }
+        } else {
           this.poseFrame++;
-        } else {
-          this.poseFrame--;
+          this.poseFrame %= poseArr.length;
         }
-      } else {
-        this.poseFrame++;
-        this.poseFrame %= poseArr.length;
+        const currPose = poseArr[this.poseFrame];
+        target.setAttribute('src', currPose);
+        poseThen = now;
       }
-      if(this.pose === 'walkingOneHanded') {
-        const pos = parseInt(this.char.style.left);
-        const speed = 30;
-        const {x, width} = this.char.getBoundingClientRect();
 
-        if(x < 0 && !this.right) {
-          this.turn();
-        } else if(x + width > innerWidth && this.right) {
-          this.turn();
+      if(now - moveThen > fps) {
+        if(this.pose === 'walkingOneHanded') {
+          const pos = parseInt(this.char.style.left);
+          const speed = 1;
+          const {x, width} = this.char.getBoundingClientRect();
+  
+          if(x < 0 && !this.right) {
+            this.turn();
+          } else if(x + width > innerWidth && this.right) {
+            this.turn();
+          }
+  
+          if(this.right) {
+            this.char.style.left = pos + speed + 'px';
+          } else {
+            this.char.style.left = pos - speed + 'px';
+          }
         }
-
-        if(this.right) {
-          this.char.style.left = pos + speed + 'px';
-        } else {
-          this.char.style.left = pos - speed + 'px';
-        }
+        moveThen = now;
       }
-      const currPose = poseArr[this.poseFrame];
-      target.setAttribute('src', currPose);
+
+      requestAnimationFrame(animation);
     }
 
-
-    this.intervalRef = setInterval(animation, 400);
+    requestAnimationFrame(animation);
   }
 
   turn() {
@@ -174,7 +179,6 @@ class Mapler {
 
   logOut() {
     this.delife();
-    clearInterval(this.intervalRef);
     this.char.remove();
   }
 }
