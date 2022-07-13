@@ -63,7 +63,7 @@ function fetchPose(mapler, info, faceEmote, pose) {
       char.append(sprite);
       char.append(name);
       addDrag(char, mapler);
-      addRemove(char);
+      addRemove(char, mapler);
       addTest(char, mapler);
 
       mapler.char = char;

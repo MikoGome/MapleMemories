@@ -63,6 +63,7 @@ class Mapler {
     this.faceEmote = null;
     this.pose = null;
     this.content = {};
+    this.intervalRef = null;
     fetchPose(this, this.body, 'default', 'jumping');
     for(const emote of ['hit', 'angry', 'pain']) {
       justFetch(this, this.body, emote, 'lyingDown');
@@ -106,7 +107,11 @@ class Mapler {
 
   animate(target) {
     let poseIncreasing = true;
-    setInterval(() => {
+    let poseFps = 2.5;
+    let now = Date.now();
+    let then = null;
+    const animation = () => {
+      console.log('test3');
       const poseArr = this.content[this.faceEmote][this.pose];
       const faceEmoteArr = this.content[this.faceEmote];
       if(this.pose === 'walkingOneHanded') {
@@ -135,6 +140,14 @@ class Mapler {
       if(this.pose === 'walkingOneHanded') {
         const pos = parseInt(this.char.style.left);
         const speed = 30;
+        const {x, width} = this.char.getBoundingClientRect();
+
+        if(x < 0 && !this.right) {
+          this.turn();
+        } else if(x + width > innerWidth && this.right) {
+          this.turn();
+        }
+
         if(this.right) {
           this.char.style.left = pos + speed + 'px';
         } else {
@@ -143,7 +156,10 @@ class Mapler {
       }
       const currPose = poseArr[this.poseFrame];
       target.setAttribute('src', currPose);
-    }, 400);
+    }
+
+
+    this.intervalRef = setInterval(animation, 400);
   }
 
   turn() {
@@ -154,5 +170,11 @@ class Mapler {
       this.right = true;
       this.sprite.classList.add('right');
     }
+  }
+
+  logOut() {
+    this.delife();
+    clearInterval(this.intervalRef);
+    this.char.remove();
   }
 }

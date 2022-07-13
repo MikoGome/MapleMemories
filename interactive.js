@@ -81,9 +81,9 @@ function addDrag(target, mapler) {
   });
 }
 
-function addRemove(target) {
+function addRemove(target, mapler) {
   target.addEventListener("mousedown", (e) => {
-    if(e.ctrlKey) target.remove();
+    if(e.ctrlKey) mapler.logOut();
   })
 }
 
