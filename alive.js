@@ -8,11 +8,14 @@ function makeAlive(mapler) {
     const turnChance = Math.floor(Math.random() * 10);
 
     if(changeBothChance < 10/3) {
-      mapler.changeBoth();
+      if(Math.random() < 0.5) mapler.changeBoth(commonEmotes, commonPoses);
+      else mapler.changeBoth();
     } else if(changeEmoteChance < 10/3) {
-      mapler.changeEmote();
+      if(Math.random() < 0.5) mapler.changeBoth(commonEmotes);
+      else mapler.changeEmote();
     } else if(changePoseChance < 10/3) {
-      mapler.changePose();
+      if(Math.random() < 0.5) mapler.changePose(commonPoses);
+      else mapler.changePose();
     }
 
     if(
@@ -25,5 +28,5 @@ function makeAlive(mapler) {
     }
     mapler.lifeRef = null;
     makeAlive(mapler);
-  }, Math.floor(Math.random() * 30000) + 5000) ;
+  }, Math.floor(Math.random() * 15000) + 5000) ;
 }

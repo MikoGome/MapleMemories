@@ -7,7 +7,7 @@ function fetchPose(mapler, info, faceEmote, pose) {
   }
   const body = JSON.parse(JSON.stringify(info));
   const fetchPoses = [];
-  if(!mapler[faceEmote]) mapler.content[faceEmote] = {};
+  if(!mapler.content[faceEmote]) mapler.content[faceEmote] = {};
   const poseArr = mapler.content[faceEmote][pose] = [];
   for(let i = 0; i < 4; i++) {
     body.faceEmote = faceEmote;
@@ -64,6 +64,7 @@ function fetchPose(mapler, info, faceEmote, pose) {
       char.append(name);
       addDrag(char, mapler);
       addRemove(char);
+      addTest(char, mapler);
 
       mapler.char = char;
       mapler.sprite = sprite;
@@ -95,4 +96,40 @@ function fetchPose(mapler, info, faceEmote, pose) {
       name.style.fontSize = '12pt';
       */
     })
+}
+
+function justFetch(mapler, info, faceEmote, pose) {
+  const body = JSON.parse(JSON.stringify(info));
+  const fetchPoses = [];
+  if(!mapler[faceEmote]) mapler.content[faceEmote] = {};
+  const poseArr = mapler.content[faceEmote][pose] = [];
+  for(let i = 0; i < 4; i++) {
+    body.faceEmote = faceEmote;
+    body.pose = pose;
+    body.poseFrame = i;
+    if(pose !== 'sitting') {
+      delete body.chairItemId;
+      delete body.chairFrame;
+    }
+    fetchPoses[i] = fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body),
+    })
+      .then(res => {
+        if(res.ok) {
+          return res.blob()
+        }
+        return null;
+      });
+  }
+  Promise.all(fetchPoses)
+    .then(blobs => {
+      blobs.forEach(blob => {
+        if(!blob) return;
+        poseArr.push(URL.createObjectURL(blob));
+      })
+    });
 }

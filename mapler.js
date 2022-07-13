@@ -1,7 +1,24 @@
+const commonPoses = [
+  'standingOneHanded', 
+  'alert',
+  'sitting',
+  'walkingOneHanded',
+]
+
+const commonEmotes = [
+  'default',
+  'smile',
+  'troubled',
+  'angry', 
+  'bewildered', 
+  'stunned'
+]
+
 const poses = [
   'standingOneHanded', 
   'alert',
   'sitting',
+  'walkingOneHanded',
   'lyingDown', 
   'lyingDownStabbing', 
   'firingBow', 
@@ -45,6 +62,9 @@ class Mapler {
     this.pose = null;
     this.content = {};
     fetchPose(this, this.body, 'default', 'jumping');
+    for(const emote of ['hit', 'angry', 'pain']) {
+      justFetch(this, this.body, emote, 'lyingDown');
+    }
     makeAlive(this);
   }
 
@@ -73,6 +93,10 @@ class Mapler {
     fetchPose(this, this.body, randEmote, randPose);
   }
 
+  walk() {
+    this.changePose('walkingOneHanded')
+  }
+
   delife() {
     clearTimeout(this.lifeRef);
     this.lifeRef = null;
@@ -98,6 +122,15 @@ class Mapler {
       } else {
         this.poseFrame++;
         this.poseFrame %= poseArr.length;
+      }
+      if(this.pose === 'walkingOneHanded') {
+        const pos = parseInt(this.char.style.left);
+        const speed = 10;
+        if(this.right) {
+          this.char.style.left = pos + speed + 'px';
+        } else {
+          this.char.style.left = pos - speed + 'px';
+        }
       }
       const currPose = poseArr[this.poseFrame];
       target.setAttribute('src', currPose);

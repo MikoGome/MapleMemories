@@ -34,7 +34,7 @@
 }
 
 .transition-bottom {
-  transition-property: bottom;
+  transition-property: all;
   transition-timing-function: ease-in;
 }
 
@@ -49,6 +49,10 @@
   to {transform: rotate(-90deg)}
 }
 
+.rotate {
+  transform: rotate(-90deg);
+}
+
 .falling-rotation-right {
   animation-name: falling-rotation-right;
   animation-timing-function: ease-in;
@@ -60,7 +64,26 @@
   to {transform: rotate(90deg)}
 }
 
+.rotate-right {
+  transform: rotate(90deg);
+}
 
 .right {
   transform: scale(2) scaleX(-1);
+}
+
+.damage {
+  animation: damage 2s;
+}
+
+@keyframes damage {
+  0% {filter: brightness(1)}
+  12.5% {filter: brightness(0.75)}
+  25% {filter: brightness(1)}
+  37.5% {filter: brightness(0.75)}
+  50% {filter: brightness(1)}
+  62.5% {filter: brightness(0.75)}
+  75% {filter: brightness(1)}
+  87.5%{filter: brightness(0.75)}
+  100% {filter: brightness(1)}
 }

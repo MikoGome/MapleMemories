@@ -4,10 +4,10 @@ function addDrag(target, mapler) {
   let y = null;
   let x2 = null;
   let y2 = null;
-  let floating = false;
+  let recoverRef = null;
 
   target.addEventListener("mousedown", (event) => {
-    floating = true;
+    clearTimeout(recoverRef);
     zIdx++;
     target.style.zIndex = zIdx;
     x = event.pageX;
@@ -32,12 +32,11 @@ function addDrag(target, mapler) {
   });
 
   target.addEventListener("mouseup", () => {
-    floating = false;
     mapler.changeEmote(['cry', 'angry']);
     target.style.cursor = "url('https://res.cloudinary.com/miko2/raw/upload/v1657492283/aero_arrow_nurzij.cur'), grab";
     const duration = parseInt(drag.style.bottom) * 2;
     drag.style.transitionDuration = duration + 'ms';
-    drag.style.animationDuration = duration + 'ms';
+    drag.style.animationDuration = (duration - 100) + 'ms';
     drag.classList.add('transition-bottom');
     if(mapler.right) {
       drag.classList.add('falling-rotation-right');
@@ -45,39 +44,50 @@ function addDrag(target, mapler) {
       drag.classList.add('falling-rotation');
     }
     drag.style.bottom = ground;
-    drag = null;
-    setTimeout(() => {
-      observer.observe(target, {attributes: true})
-      console.log('target', target);
-      target.classList.remove('transition-bottom');
-      target.classList.remove('falling-rotation');
-      target.classList.remove('falling-rotation-right');
+    drag.onanimationend = () => {
       mapler.changeBoth(['hit', 'angry', 'pain'], 'lyingDown');
-      setTimeout(() => {
-        if(floating) return;
-        mapler.changeBoth(undefined, 'alert'); //goes off when i'm holding mapler
+      recoverRef = setTimeout(() => {
+        mapler.changeBoth(undefined, 'alert'); 
         makeAlive(mapler);
       }, Math.floor(Math.random() * 5000) + 3000);
-    }, duration - 100);
-    
+      target.onanimationend = null;
+    }
+    const sprite = drag.firstChild;
+    sprite.onload = () => {
+      if(
+        mapler.content.hit.lyingDown[0] === sprite.getAttribute('src') ||
+        mapler.content.angry.lyingDown[0] === sprite.getAttribute('src') ||
+        mapler.content.pain.lyingDown[0] === sprite.getAttribute('src')
+      ) {
+        sprite.onload = null;
+        target.classList.remove('falling-rotation');
+        target.classList.remove('falling-rotation-right');
+        sprite.classList.add('damage');
+        sprite.onanimationend = () => {
+          sprite.classList.remove('damage');
+          sprite.onanimationend = null;
+        }
+      }
+    }
+    drag.ontransitionend = () => {
+      target.classList.remove('transition-bottom');
+      target.ontransitionend = null;
+    }
+    drag = null;
   });
 }
 
-const mutationList = [];
-
-const observer = new MutationObserver((mutations) => {
-  for(const mutation of mutations) {
-    if(mutation.type === 'attributes') {
-      console.log('attributes changed');
-    }
-  }
-});
-
-
-
 function addRemove(target) {
   target.addEventListener("mousedown", (e) => {
-    console.log('ctrl', e.ctrKey)
     if(e.ctrlKey) target.remove();
   })
+}
+
+function addTest(target, mapler) {
+  document.addEventListener('keydown', (e) => {
+    if(e.ctrlKey && e.key === 'q') {
+      console.log('walking')
+      mapler.walk();
+    }
+  });
 }
