@@ -54,6 +54,7 @@ const emotes = [
 
 class Mapler {
   constructor(name, body) {
+
     this.name = name;
     this.body = body;
     this.right = Math.random() < 0.5 ? true : false;
@@ -63,6 +64,13 @@ class Mapler {
     this.faceEmote = null;
     this.pose = null;
     this.content = {};
+
+    this.falling = false;
+    this.rotation = 0;
+    this.gravity = 0;
+    this.bottom = null;
+
+
     fetchPose(this, this.body, 'default', 'jumping');
     for(const emote of ['hit', 'angry', 'pain']) {
       justFetch(this, this.body, emote, 'lyingDown');
@@ -111,10 +119,9 @@ class Mapler {
     let moveThen = now;
     const poseFps = 1000/4;
     const fps = 1000 / 120;
-
+    
     const animation = () => {
       now = Date.now();
-      console.log('test3');
       const poseArr = this.content[this.faceEmote][this.pose];
       if(poseThen !== null && now - poseThen > poseFps) {
         const faceEmoteArr = this.content[this.faceEmote];
@@ -159,6 +166,29 @@ class Mapler {
           }
         }
         moveThen = now;
+
+        const bottom = parseInt(this.bottom);
+        // console.log(bottom > ground);
+
+        if(this.falling && bottom > ground) {
+          this.bottom = bottom - this.gravity;
+          this.gravity += 0.1;
+          this.rotation += 1;
+
+          if(this.right) {
+            this.sprite.style.transform = `scale(2) scaleX(-1) rotate(${-this.rotation}deg)`;
+          } else {
+            this.sprite.style.transform = `scale(2) rotate(${-this.rotation}deg)`;
+          }
+
+          if(this.bottom < ground) this.bottom = ground;
+          this.char.style.bottom = this.bottom + 'px';
+        } else if(this.falling) {
+          this.falling = false;
+          this.gravity = 0;
+          this.rotation = 0;
+          this.changeBoth(['hit', 'angry', 'pain'], 'lyingDown');
+        }
       }
 
       requestAnimationFrame(animation);

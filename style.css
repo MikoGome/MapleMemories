@@ -33,41 +33,6 @@
   font-size: 12pt;
 }
 
-.transition-bottom {
-  transition-property: all;
-  transition-timing-function: ease-in;
-}
-
-.falling-rotation {
-  animation-name: falling-rotation;
-  animation-timing-function: ease-in;
-  animation-fill-mode: forwards;
-}
-
-@keyframes falling-rotation {
-  from {transform: rotate(0)}
-  to {transform: rotate(-90deg)}
-}
-
-.rotate {
-  transform: rotate(-90deg);
-}
-
-.falling-rotation-right {
-  animation-name: falling-rotation-right;
-  animation-timing-function: ease-in;
-  animation-fill-mode: forwards;
-}
-
-@keyframes falling-rotation-right {
-  from {transform: rotate(0)}
-  to {transform: rotate(90deg)}
-}
-
-.rotate-right {
-  transform: rotate(90deg);
-}
-
 .right {
   transform: scale(2) scaleX(-1);
 }
@@ -86,4 +51,10 @@
   75% {filter: brightness(1)}
   87.5%{filter: brightness(0.75)}
   100% {filter: brightness(1)}
+}
+
+.transform-origin-center {
+  position: relative;
+  top: -25pt;
+  transform-origin: center;
 }

@@ -72,29 +72,10 @@ function fetchPose(mapler, info, faceEmote, pose) {
 
       document.body.append(char);
       char.style.zIndex = zIdx;
-      char.style.bottom = ground;
-      char.style.left= '0';
-      /* css stuff
-     
-      char.style.position = 'absolute';
-      
-      sprite.style.transformOrigin = 'bottom';
-      sprite.style.transform = 'scale(2)';
-      char.style.height = '11rem';
-      char.style.display = 'flex';
-      char.style.flexDirection = 'column';
-      char.style.justifyContent = 'flex-end';
-      char.style.alignItems = 'center';
-      name.style.color = 'white';
-      char.style.cursor = "url('https://res.cloudinary.com/miko2/raw/upload/v1657492283/aero_arrow_nurzij.cur'), pointer";   
-      name.style.background = 'rgba(0, 0, 0, 0.65)';
-      name.style.textAlign = 'center';
-      name.style.position = 'relative';
-      name.style.margin = '0.25rem 0';
-      name.style.padding = '0.25rem 0.25rem';
-      name.style.fontFamily = 'Arial';
-      name.style.fontSize = '12pt';
-      */
+      char.style.bottom = ground + 'px';
+      const {width} = char.getBoundingClientRect();
+      char.style.left= Math.floor(Math.random() * (innerWidth - width)) + 'px';
+      mapler.bottom = ground;
     })
 }
 
