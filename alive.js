@@ -1,8 +1,15 @@
 function makeAlive(mapler) {
   if(mapler.lifeRef) return;
   mapler.lifeRef = setTimeout(() => {
-    console.log('alive');
+    console.log('alive', mapler.lifeRef);
     if(mapler.bottom > ground || mapler.pose === 'jumping' || mapler.pose === 'flying') return;
+
+    if(mapler.pose === 'sitting' && Math.random() < 0.6) {
+      if(Math.random() < 0.5) mapler.changeBoth(commonEmotes);
+      else mapler.changeEmote();
+      mapler.lifeRef = null;
+      return makeAlive(mapler);
+    } 
     const changePoseChance = Math.floor(Math.random() * 10);
     const changeEmoteChance = Math.floor(Math.random() * 10);
     const changeBothChance = Math.floor(Math.random() * 10);
@@ -24,5 +31,5 @@ function makeAlive(mapler) {
     }
     mapler.lifeRef = null;
     makeAlive(mapler);
-  }, Math.floor(Math.random() * 15000) + 5000) ;
+  }, Math.floor(Math.random() * 20000) + 600) ;
 }

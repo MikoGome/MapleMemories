@@ -2,17 +2,7 @@ const commonPoses = [
   'standingOneHanded', 
   'alert',
   'sitting',
-  'jumping',
   'walkingOneHanded',
-]
-
-const commonEmotes = [
-  'default',
-  'smile',
-  'troubled',
-  'angry', 
-  'bewildered', 
-  'stunned'
 ]
 
 const poses = [
@@ -20,7 +10,6 @@ const poses = [
   'alert',
   'sitting',
   'walkingOneHanded',
-  'jumping',
   'lyingDown', 
   'lyingDownStabbing', 
   'firingBow', 
@@ -41,6 +30,16 @@ const poses = [
   'spinningSlash'
 ];
 
+const commonEmotes = [
+  'default',
+  'smile',
+  'troubled',
+  'angry', 
+  'bewildered', 
+  'stunned',
+  'cheers',
+]
+
 const emotes = [
   'default', 
   'hit', 
@@ -49,7 +48,11 @@ const emotes = [
   'cry', 
   'angry', 
   'bewildered', 
-  'stunned'
+  'stunned',
+  'cheers',
+  'oops',
+  'shine',
+  'wink'
 ];
 
 class Mapler {
@@ -133,7 +136,6 @@ class Mapler {
 
     target.onerror = () => {
       console.log('error');
-      target.setAttribute('src', backUp);
     }
     
     const animation = () => {
@@ -221,7 +223,6 @@ class Mapler {
           target.setAttribute('src', this.content[this.faceEmote][this.pose][this.poseFrame]);
         }
       }
-
       this.animateRef = requestAnimationFrame(animation);
     }
 

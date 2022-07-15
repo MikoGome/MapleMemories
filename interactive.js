@@ -13,8 +13,13 @@ function addDrag(target, mapler) {
     mapler.gravity = 0;
     zIdx++;
     target.style.zIndex = zIdx;
-    x = event.pageX;
-    y = event.pageY;
+    if(event.changedTouches) {
+      x = event.changedTouches[0].pageX;
+      y = event.changedTouches[0].pageY;
+    } else {
+      x = event.pageX;
+      y = event.pageY;
+    }
     drag = target;
     target.classList.add('move-cursor');
     mapler.delife();
@@ -27,10 +32,17 @@ function addDrag(target, mapler) {
 
   const handleMouseMove = (event) => {
     if(!drag) return;
-    x2 = x - event.pageX;
-    y2 = y - event.pageY;
-    x = event.pageX;
-    y = event.pageY;
+    if(event.changedTouches) {
+      x2 = x - event.changedTouches[0].pageX;
+      y2 = y - event.changedTouches[0].pageY;
+      x = event.changedTouches[0].pageX;
+      y = event.changedTouches[0].pageY;
+    } else {
+      x2 = x - event.pageX;
+      y2 = y - event.pageY;
+      x = event.pageX;
+      y = event.pageY;
+    }
     drag.style.left = `${drag.offsetLeft - x2 }px`;
     const {bottom, height} = drag.getBoundingClientRect();
     mapler.bottom = innerHeight - ground - bottom;
