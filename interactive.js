@@ -19,7 +19,6 @@ function addDrag(target, mapler) {
     target.classList.add('move-cursor');
     mapler.delife();
     sprite.onload = () => {
-      if(mapler.pose !== 'flying') return;
       sprite.classList.add('transform-origin-center');
       sprite.onload = null;
     };
@@ -39,19 +38,15 @@ function addDrag(target, mapler) {
   });
 
   target.addEventListener("mouseup", () => {
+    const sprite = drag.firstChild;
+    drag = null;
+
     mapler.changeEmote(['cry', 'angry']);
     mapler.falling = true;
     target.classList.remove('move-cursor');
 
-    const sprite = drag.firstChild;
-
     sprite.onload = () => {
-      if(
-        mapler.pose === 'lyingDown'
-        // mapler.content.hit.lyingDown[0] === sprite.getAttribute('src') ||
-        // mapler.content.angry.lyingDown[0] === sprite.getAttribute('src') ||
-        // mapler.content.pain.lyingDown[0] === sprite.getAttribute('src')
-      ) {
+      if(mapler.pose === 'lyingDown') {
         sprite.onload = null;
         sprite.classList.remove('transform-origin-center');
         sprite.classList.remove('damage');
@@ -69,8 +64,6 @@ function addDrag(target, mapler) {
         }, Math.floor(Math.random() * 5000) + 3000);
       }
     }
-
-    drag = null;
   });
 }
 
@@ -85,6 +78,9 @@ function addTest(target, mapler) {
     if(e.ctrlKey && e.key === 'q') {
       console.log('walking')
       mapler.walk();
+    } else if(e.ctrlKey && e.key === 'y') {
+      console.log('jumping');
+      mapler.jump();
     }
   });
 }

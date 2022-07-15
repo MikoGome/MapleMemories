@@ -2,6 +2,7 @@ const commonPoses = [
   'standingOneHanded', 
   'alert',
   'sitting',
+  'jumping',
   'walkingOneHanded',
   'walkingOneHanded',
   'walkingOneHanded',
@@ -21,6 +22,7 @@ const poses = [
   'alert',
   'sitting',
   'walkingOneHanded',
+  'jumping',
   'lyingDown', 
   'lyingDownStabbing', 
   'firingBow', 
@@ -65,13 +67,16 @@ class Mapler {
     this.pose = null;
     this.content = {};
 
+    this.animateRef = null;
+
     this.falling = false;
     this.rotation = 0;
     this.gravity = 0;
     this.bottom = null;
+    this.jumpForce = 0;
 
 
-    fetchPose(this, this.body, 'default', 'jumping');
+    fetchPose(this, this.body, 'default', 'standingOneHanded');
     for(const emote of ['hit', 'angry', 'pain']) {
       justFetch(this, this.body, emote, 'lyingDown');
     }
@@ -105,6 +110,10 @@ class Mapler {
 
   walk() {
     this.changePose('walkingOneHanded')
+  }
+
+  jump() {
+    this.changePose('jumping')
   }
 
   delife() {
@@ -142,8 +151,6 @@ class Mapler {
           this.poseFrame++;
           this.poseFrame %= poseArr.length;
         }
-        const currPose = poseArr[this.poseFrame];
-        target.setAttribute('src', currPose);
         poseThen = now;
       }
 
@@ -151,7 +158,7 @@ class Mapler {
         if(this.pose === 'walkingOneHanded') {
           const pos = parseInt(this.char.style.left);
           const speed = 1;
-          const {x, width} = this.char.getBoundingClientRect();
+          const {x, width} = this.sprite.getBoundingClientRect();
   
           if(x < 0 && !this.right) {
             this.turn();
@@ -168,16 +175,26 @@ class Mapler {
         moveThen = now;
 
         const bottom = parseInt(this.bottom);
-        // console.log(bottom > ground);
+        if(!this.falling && this.pose === 'jumping') {
+          this.char.style.bottom = bottom + 'px';
+          this.bottom += this.jumpForce;
+          this.jumpForce -= 0.1;
+        }
+
+        console.log(this.jumpForce);
+
+        if(this.jumpForce < 0) {
+          this.falling = true;
+        }
 
         if(this.falling && bottom > ground) {
           this.bottom = bottom - this.gravity;
           this.gravity += 0.1;
           this.rotation += 1;
 
-          if(this.right) {
+          if(this.right && this.pose === 'flying') {
             this.sprite.style.transform = `scale(2) scaleX(-1) rotate(${-this.rotation}deg)`;
-          } else {
+          } else if(this.pose === 'flying') {
             this.sprite.style.transform = `scale(2) rotate(${-this.rotation}deg)`;
           }
 
@@ -187,28 +204,35 @@ class Mapler {
           this.falling = false;
           this.gravity = 0;
           this.rotation = 0;
-          this.changeBoth(['hit', 'angry', 'pain'], 'lyingDown');
+          if(this.pose === 'jumping' && this.bottom === ground) {
+            this.changePose(['alert', 'standingOneHanded', 'jumping']);
+            this.jumpForce = 5;
+          } else {
+            this.changeBoth(['hit', 'angry', 'pain'], 'lyingDown');
+          }
         }
+        target.setAttribute('src', this.content[this.faceEmote][this.pose][this.poseFrame]);
       }
 
-      requestAnimationFrame(animation);
+      this.animateRef = requestAnimationFrame(animation);
     }
 
-    requestAnimationFrame(animation);
+    this.animateRef = requestAnimationFrame(animation);
   }
 
   turn() {
     if(this.right) {
       this.right = false;
-      this.sprite.classList.remove('right');
+      this.sprite.classList.remove('right-sprite');
     } else {
       this.right = true;
-      this.sprite.classList.add('right');
+      this.sprite.classList.add('right-sprite');
     }
   }
 
   logOut() {
     this.delife();
+    cancelAnimationFrame(this.animateRef);
     this.char.remove();
   }
 }

@@ -1,5 +1,5 @@
 function fetchPose(mapler, info, faceEmote, pose) {
-  console.log('faceEmote', faceEmote, 'pose', pose);
+  if(mapler.content[faceEmote]) console.log(mapler.content[faceEmote][pose])
   if(mapler.content[faceEmote] && mapler.content[faceEmote][pose]) {
     mapler.faceEmote = faceEmote;
     mapler.pose = pose;
@@ -53,12 +53,12 @@ function fetchPose(mapler, info, faceEmote, pose) {
       sprite.classList.add('sprite');
 
       if(mapler.right) {
-        sprite.classList.add('right');
+        sprite.classList.add('right-sprite');
       }
 
       mapler.animate(sprite);
       const name = document.createElement('span');
-      name.classList.add('name');
+      name.classList.add('name-tag');
       name.innerText = mapler.name;
       char.append(sprite);
       char.append(name);

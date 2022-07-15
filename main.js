@@ -3,24 +3,6 @@ let zIdx= 10000;
 
 const ground = 10;
 
-/*
-const body = {
-  "skin": "light",
-  "faceId": 20000,
-  "hairId": 30000,
-  "pose": "standingOneHanded",
-  "poseFrame": 1,
-  "faceEmote": "default",
-  "faceFrame": 0,
-  "ears": "humanEars",
-  "itemIds": [
-    1060002,
-    1040193
-  ],
-  "effectFrame": 0,
-}
-*/
-
 function generateMapler(mapler) {
   const {name} = mapler;
   const input = {};

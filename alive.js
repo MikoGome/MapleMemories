@@ -1,7 +1,8 @@
 function makeAlive(mapler) {
   if(mapler.lifeRef) return;
   mapler.lifeRef = setTimeout(() => {
-    console.log('mapler', mapler);
+    console.log('alive');
+    if(mapler.bottom > ground || mapler.pose === 'jumping' || mapler.pose === 'flying') return;
     const changePoseChance = Math.floor(Math.random() * 10);
     const changeEmoteChance = Math.floor(Math.random() * 10);
     const changeBothChance = Math.floor(Math.random() * 10);
