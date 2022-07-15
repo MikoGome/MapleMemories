@@ -6,7 +6,7 @@ function addDrag(target, mapler) {
   let y2 = null;
   let recoverRef = null;
 
-  target.addEventListener("mousedown", (event) => {
+  const handleMouseDown = (event) => {
     const sprite = target.firstChild;
     clearTimeout(recoverRef);
     mapler.falling = false;
@@ -23,9 +23,9 @@ function addDrag(target, mapler) {
       sprite.onload = null;
     };
     mapler.changeBoth(['cry', 'angry', 'bewildered'], 'flying');
-  });
+  }
 
-  target.addEventListener("mousemove", (event) => {
+  const handleMouseMove = (event) => {
     if(!drag) return;
     x2 = x - event.pageX;
     y2 = y - event.pageY;
@@ -35,9 +35,9 @@ function addDrag(target, mapler) {
     const {bottom, height} = drag.getBoundingClientRect();
     mapler.bottom = innerHeight - ground - bottom;
     drag.style.bottom = `${innerHeight - (drag.offsetTop - y2) - height}px`;
-  });
+  };
 
-  target.addEventListener("mouseup", () => {
+  const handleMouseUp = () => {
     const sprite = drag.firstChild;
     drag = null;
 
@@ -59,12 +59,23 @@ function addDrag(target, mapler) {
           sprite.onanimationend = null;
         }
         recoverRef = setTimeout(() => {
+          if(mapler.pose === 'flying') return;
           mapler.changeBoth(undefined, 'alert'); 
           makeAlive(mapler);
         }, Math.floor(Math.random() * 5000) + 3000);
       }
     }
-  });
+  }
+
+  target.addEventListener("mousedown", handleMouseDown);
+  target.addEventListener("touchstart", handleMouseDown);
+  
+  target.addEventListener("mousemove", handleMouseMove);
+  target.addEventListener("touchmove", handleMouseMove);
+
+  target.addEventListener("mouseup", handleMouseUp);
+  target.addEventListener("touchend", handleMouseUp);
+  target.addEventListener("touchcancel", handleMouseUp);
 }
 
 function addRemove(target, mapler) {
