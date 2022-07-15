@@ -191,7 +191,7 @@ class Mapler {
           this.jumpForce -= 0.1;
         }
 
-        console.log(this.jumpForce);
+        // console.log(this.jumpForce);
 
         if(this.jumpForce < 0) {
           this.falling = true;
