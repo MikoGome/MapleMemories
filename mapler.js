@@ -4,8 +4,6 @@ const commonPoses = [
   'sitting',
   'jumping',
   'walkingOneHanded',
-  'walkingOneHanded',
-  'walkingOneHanded',
 ]
 
 const commonEmotes = [
@@ -80,6 +78,9 @@ class Mapler {
     for(const emote of ['hit', 'angry', 'pain']) {
       justFetch(this, this.body, emote, 'lyingDown');
     }
+    for(const emote of ['cry', 'angry', 'bewildered']) {
+      justFetch(this, this.body, emote, 'flying');
+    }
     makeAlive(this);
   }
 
@@ -126,8 +127,14 @@ class Mapler {
     let now = Date.now();
     let poseThen = now;
     let moveThen = now;
+
     const poseFps = 1000/4;
     const fps = 1000 / 120;
+
+    target.onerror = () => {
+      console.log('error');
+      target.setAttribute('src', backUp);
+    }
     
     const animation = () => {
       now = Date.now();
@@ -152,6 +159,7 @@ class Mapler {
           this.poseFrame %= poseArr.length;
         }
         poseThen = now;
+        target.setAttribute('src', this.content[this.faceEmote][this.pose][this.poseFrame]);
       }
 
       if(now - moveThen > fps) {
@@ -210,8 +218,8 @@ class Mapler {
           } else {
             this.changeBoth(['hit', 'angry', 'pain'], 'lyingDown');
           }
+          target.setAttribute('src', this.content[this.faceEmote][this.pose][this.poseFrame]);
         }
-        target.setAttribute('src', this.content[this.faceEmote][this.pose][this.poseFrame]);
       }
 
       this.animateRef = requestAnimationFrame(animation);
@@ -227,6 +235,15 @@ class Mapler {
     } else {
       this.right = true;
       this.sprite.classList.add('right-sprite');
+    }
+
+    if(this.pose !== 'walkingOneHanded') {
+      this.changePose('walkingOneHanded');
+      if(Math.random() < 0.5) {
+        setTimeout(() => {
+          this.changePose('standingOneHanded');
+        }, (Math.random() * 5000) + 600);
+      }
     }
   }
 

@@ -3,6 +3,8 @@ let zIdx= 10000;
 
 const ground = 10;
 
+const storage = {};
+
 function generateMapler(mapler) {
   const {name} = mapler;
   const input = {};

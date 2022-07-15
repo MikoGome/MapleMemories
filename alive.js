@@ -19,12 +19,7 @@ function makeAlive(mapler) {
       else mapler.changePose();
     }
 
-    if(
-      mapler.pose !== 'sitting' && 
-      mapler.pose !== 'lyingDown' && 
-      mapler.pose !== 'lyingDownStabbing' && 
-      turnChance < 10/3
-    ) {
+    if(turnChance < 10/3) {
       mapler.turn();
     }
     mapler.lifeRef = null;
