@@ -10,6 +10,7 @@
   align-items: center;
 
   user-select: none;
+  touch-action: none;
 }
 
 .move-cursor {
