@@ -5,6 +5,8 @@ function addDrag(target, mapler) {
   let x2 = null;
   let y2 = null;
   let recoverRef = null;
+  
+  let touchIdx = null;
 
   const handleMouseDown = (event) => {
     const sprite = target.firstChild;
@@ -12,10 +14,12 @@ function addDrag(target, mapler) {
     mapler.falling = false;
     mapler.gravity = 0;
     zIdx++;
-    target.style.zIndex = zIdx;
+    target.style.zIndex = zIdx;  
     if(event.changedTouches) {
-      x = event.changedTouches[0].pageX;
-      y = event.changedTouches[0].pageY;
+      if(touchIdx === null) touchIdx = event.touches.length - 1;
+      const touch = event.touches[touchIdx];
+      x = touch.pageX;
+      y = touch.pageY;
     } else {
       x = event.pageX;
       y = event.pageY;
@@ -33,10 +37,12 @@ function addDrag(target, mapler) {
   const handleMouseMove = (event) => {
     if(!drag) return;
     if(event.changedTouches) {
-      x2 = x - event.changedTouches[0].pageX;
-      y2 = y - event.changedTouches[0].pageY;
-      x = event.changedTouches[0].pageX;
-      y = event.changedTouches[0].pageY;
+      const touch = event.touches[touchIdx];
+      console.log(touchIdx);
+      x2 = x - touch.pageX;
+      y2 = y - touch.pageY;
+      x = touch.pageX;
+      y = touch.pageY;
     } else {
       x2 = x - event.pageX;
       y2 = y - event.pageY;
@@ -52,6 +58,7 @@ function addDrag(target, mapler) {
   const handleMouseUp = () => {
     const sprite = drag.firstChild;
     drag = null;
+    touchIdx = null;
 
     mapler.changeEmote(['cry', 'angry']);
     mapler.falling = true;
