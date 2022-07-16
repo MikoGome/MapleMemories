@@ -10,6 +10,7 @@ const poses = [
   'alert',
   'sitting',
   'walkingOneHanded',
+  'jumping',
   'lyingDown', 
   'lyingDownStabbing', 
   'firingBow', 
@@ -37,7 +38,6 @@ const commonEmotes = [
   'angry', 
   'bewildered', 
   'stunned',
-  'cheers',
 ]
 
 const emotes = [
@@ -70,14 +70,18 @@ class Mapler {
 
     this.animateRef = null;
 
-    this.falling = false;
+    this.falling = true;
     this.rotation = 0;
     this.gravity = 0;
-    this.bottom = null;
+    this.bottom = 137;
     this.jumpForce = 0;
+    this.isJumping = true;
+
+    this.justSpawn = true;
 
 
-    fetchPose(this, this.body, 'default', 'standingOneHanded');
+    fetchPose(this, this.body, 'default', 'jumping');
+    justFetch(this, this.body, 'default', 'standingOneHanded');
     for(const emote of ['hit', 'angry', 'pain']) {
       justFetch(this, this.body, emote, 'lyingDown');
     }
@@ -136,10 +140,15 @@ class Mapler {
 
     target.onerror = () => {
       console.log('error');
+      this.changeBoth('default', 'standingOneHanded');
     }
     
+    let highestPoint = 0;
+
     const animation = () => {
       now = Date.now();
+      highestPoint = Math.max(highestPoint, this.bottom);
+      console.log('highest', highestPoint);
       const poseArr = this.content[this.faceEmote][this.pose];
       if(poseThen !== null && now - poseThen > poseFps) {
         const faceEmoteArr = this.content[this.faceEmote];
@@ -181,17 +190,20 @@ class Mapler {
           } else {
             this.char.style.left = pos - speed + 'px';
           }
+          target.setAttribute('src', this.content[this.faceEmote][this.pose][this.poseFrame]);
         }
         moveThen = now;
 
         const bottom = parseInt(this.bottom);
-        if(!this.falling && this.pose === 'jumping') {
+        if(!this.falling && this.isJumping) {
           this.char.style.bottom = bottom + 'px';
           this.bottom += this.jumpForce;
           this.jumpForce -= 0.1;
         }
 
-        // console.log(this.jumpForce);
+        if(this.isJumping && this.pose !== 'jumping') {
+          this.changePose('jumping');
+        }
 
         if(this.jumpForce < 0) {
           this.falling = true;
@@ -214,8 +226,9 @@ class Mapler {
           this.falling = false;
           this.gravity = 0;
           this.rotation = 0;
-          if(this.pose === 'jumping' && this.bottom === ground) {
-            this.changePose(['alert', 'standingOneHanded', 'jumping']);
+          if(this.isJumping && this.bottom === ground) {
+            this.isJumping = false;
+            this.changePose(this.justSpawn ? 'standingOneHanded' : ['alert', 'standingOneHanded', 'jumping']);
             this.jumpForce = 5;
           } else {
             this.changeBoth(['hit', 'angry', 'pain'], 'lyingDown');
