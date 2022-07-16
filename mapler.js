@@ -181,6 +181,7 @@ class Mapler {
           } else {
             this.char.style.left = pos - speed + 'px';
           }
+          target.setAttribute('src', this.content[this.faceEmote][this.pose][this.poseFrame]);
         }
         moveThen = now;
 
