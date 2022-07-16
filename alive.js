@@ -1,12 +1,11 @@
 function makeAlive(mapler) {
   if(mapler.lifeRef) return;
   mapler.lifeRef = setTimeout(() => {
-    console.log('alive', mapler.lifeRef);
-    if(mapler.bottom > ground || mapler.pose === 'jumping' || mapler.pose === 'flying') return;
+    console.log('alive', mapler.name);
+    if(mapler.bottom > ground || mapler.pose === 'jumping' || mapler.pose === 'flying' || mapler.isJumping) return;
 
     if(mapler.pose === 'sitting' && Math.random() < 0.6) {
-      if(Math.random() < 0.5) mapler.changeBoth(commonEmotes);
-      else mapler.changeEmote();
+      mapler.changeEmote();
       mapler.lifeRef = null;
       return makeAlive(mapler);
     } 

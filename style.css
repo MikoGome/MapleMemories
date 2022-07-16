@@ -10,6 +10,7 @@
   align-items: center;
 
   user-select: none;
+  touch-action: none;
 }
 
 .move-cursor {
@@ -56,4 +57,13 @@
   position: relative;
   top: -25pt;
   transform-origin: center;
+}
+
+.spawn {
+  animation: spawn 1s ease-in;
+}
+
+@keyframes spawn {
+  from {opacity: 0}
+  to {opacity: 1}
 }

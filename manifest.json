@@ -6,7 +6,7 @@
   "content_scripts": [
       {
           "matches": ["https://*/*", "http://*/*", "<all_urls>"],
-          "js": ["./maplers.js", "./mapler.js", "./alive.js", "./fetch.js", "./interactive.js", "./main.js"],
+          "js": ["./maplers.js", "./helper.js", "./mapler.js", "./alive.js", "./fetch.js", "./interactive.js", "./main.js"],
           "css": ["./style.css"]
       }
   ]

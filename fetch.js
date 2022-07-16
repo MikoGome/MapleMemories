@@ -2,9 +2,10 @@ function fetchPose(mapler, info, faceEmote, pose) {
   if(mapler.content[faceEmote] && mapler.content[faceEmote][pose]) {
     mapler.faceEmote = faceEmote;
     mapler.pose = pose;
+    if(mapler.pose === 'jumping') mapler.isJumping = true;
     return;
   }
-  const body = JSON.parse(JSON.stringify(info));
+  const body = deepClone(info);
   const fetchPoses = [];
   if(!mapler.content[faceEmote]) mapler.content[faceEmote] = {};
   const poseArr = mapler.content[faceEmote][pose] = [];
@@ -40,6 +41,7 @@ function fetchPose(mapler, info, faceEmote, pose) {
     .then(() => {
       mapler.faceEmote = faceEmote;
       mapler.pose = pose;
+      if(mapler.pose === 'jumping') mapler.isJumping = true;
       console.log(pose, faceEmote);
       if(mapler.sprite) {
         return;
@@ -54,8 +56,11 @@ function fetchPose(mapler, info, faceEmote, pose) {
       if(mapler.right) {
         sprite.classList.add('right-sprite');
       }
-
-      mapler.animate(sprite);
+      char.classList.add('spawn');
+      setTimeout(() => {
+        char.classList.remove('spawn');
+        mapler.animate(sprite);
+      }, 3000);
       const name = document.createElement('span');
       name.classList.add('name-tag');
       name.innerText = mapler.name;
@@ -67,21 +72,20 @@ function fetchPose(mapler, info, faceEmote, pose) {
 
       mapler.char = char;
       mapler.sprite = sprite;
-      mapler.name = name;
+      mapler.ign = name;
 
       document.body.append(char);
       char.style.zIndex = zIdx;
-      char.style.bottom = ground + 'px';
+      char.style.bottom = ground + mapler.bottom + 'px';
       const {width} = char.getBoundingClientRect();
       char.style.left= Math.floor(Math.random() * (innerWidth - width)) + 'px';
-      mapler.bottom = ground;
     })
 }
 
 function justFetch(mapler, info, faceEmote, pose) {
-  const body = JSON.parse(JSON.stringify(info));
+  const body = deepClone(info);
   const fetchPoses = [];
-  if(!mapler[faceEmote]) mapler.content[faceEmote] = {};
+  if(!mapler.content[faceEmote]) mapler.content[faceEmote] = {};
   const poseArr = mapler.content[faceEmote][pose] = [];
   for(let i = 0; i < 4; i++) {
     body.faceEmote = faceEmote;
