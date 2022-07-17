@@ -5,14 +5,17 @@ const ground = 10;
 
 const onlineMaplers = {};
 
+const maplerStorage = {};
+
 chrome.runtime.onMessage.addListener((msg, sender, response) => {
   if(msg.command ===  'login') {
     const {mapler} = msg;
-    onlineMaplers[mapler.name] = generateMapler(mapler);
+    onlineMaplers[mapler.name] = true;
+    maplerStorage[mapler.name] = generateMapler(mapler);
   } else if(msg.command === 'logout') {
     const {name} = msg;
-    onlineMaplers[name].logOut();
-    delete onlineMaplers[mapler.name];
+    maplerStorage[name].logOut();
+    delete onlineMaplers[name];
   } else if(msg.command === 'getOnline') {
     chrome.runtime.sendMessage({command: 'sentOnline', onlineMaplers})
   }

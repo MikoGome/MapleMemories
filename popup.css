@@ -6,7 +6,7 @@
 
 body {
   height: 400px;
-  width: 300px;
+  width: 350px;
   background-image: url('./static/background.png');
   background-size: cover;
   background-position: 30% center;
@@ -53,6 +53,16 @@ button:hover {
   padding: 5px;
   border: 1px solid black;
   border-radius: 5px;
+}
+
+.name {
+  color: white;
+  padding: 5px;
+  border: 1px solid white;
+  outline: 1px solid #537cca;
+  border-radius: 5px;
+  background-image: linear-gradient(#537cca, #2a5fa4);
+  width: 60%;
 }
 
 .online {

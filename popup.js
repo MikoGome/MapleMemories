@@ -5,6 +5,7 @@ maplers.forEach((mapler) => {
   const div = document.createElement('div');
   const name = document.createElement('h4');
   name.innerText = mapler.name;
+  name.classList.add('name');
   const status = document.createElement('h4');
   status.innerText = 'offline';
   status.classList.add('status', 'offline');
