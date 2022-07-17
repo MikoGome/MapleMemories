@@ -139,7 +139,6 @@ class Mapler {
     const fps = 1000 / 120;
 
     target.onerror = () => {
-      console.log('error');
       this.changeBoth('default', 'standingOneHanded');
     }
     
@@ -148,7 +147,6 @@ class Mapler {
     const animation = () => {
       now = Date.now();
       highestPoint = Math.max(highestPoint, this.bottom);
-      console.log('highest', highestPoint);
       const poseArr = this.content[this.faceEmote][this.pose];
       if(poseThen !== null && now - poseThen > poseFps) {
         const faceEmoteArr = this.content[this.faceEmote];
@@ -231,6 +229,9 @@ class Mapler {
             if(this.justSpawn) {
               this.changePose('standingOneHanded');
               this.justSpawn = false;
+              addDrag(this);
+              addRemove(this);
+              addTest(this);  
             } else {
               this.changePose(['alert', 'standingOneHanded', 'jumping']);
             }

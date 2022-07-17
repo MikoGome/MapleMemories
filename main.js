@@ -3,15 +3,18 @@ let zIdx= 10000;
 
 const ground = 10;
 
-const storage = {};
+const onlineMaplers = {};
 
 chrome.runtime.onMessage.addListener((msg, sender, response) => {
-  console.log('testing')
   if(msg.command ===  'login') {
     const {mapler} = msg;
-    generateMapler(mapler);
+    onlineMaplers[mapler.name] = generateMapler(mapler);
   } else if(msg.command === 'logout') {
-    
+    const {name} = msg;
+    onlineMaplers[name].logOut();
+    delete onlineMaplers[mapler.name];
+  } else if(msg.command === 'getOnline') {
+    chrome.runtime.sendMessage({command: 'sentOnline', onlineMaplers})
   }
 });
 
@@ -35,7 +38,6 @@ function generateMapler(mapler) {
 
   input.chairItemId = mapler.chair.id;
   input.chairFrame = mapler.chair.frame;
-  console.log(input);
   return new Mapler(name, input);
 }
 

@@ -1,7 +1,6 @@
 function makeAlive(mapler) {
   if(mapler.lifeRef) return;
   mapler.lifeRef = setTimeout(() => {
-    console.log('alive', mapler.name);
     if(mapler.bottom > ground || mapler.pose === 'jumping' || mapler.pose === 'flying' || mapler.isJumping) return;
 
     if(mapler.pose === 'sitting' && Math.random() < 0.6) {

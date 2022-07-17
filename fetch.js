@@ -42,7 +42,6 @@ function fetchPose(mapler, info, faceEmote, pose) {
       mapler.faceEmote = faceEmote;
       mapler.pose = pose;
       if(mapler.pose === 'jumping') mapler.isJumping = true;
-      console.log(pose, faceEmote);
       if(mapler.sprite) {
         return;
       }
@@ -57,18 +56,12 @@ function fetchPose(mapler, info, faceEmote, pose) {
         sprite.classList.add('right-sprite');
       }
       char.classList.add('spawn');
-      setTimeout(() => {
-        char.classList.remove('spawn');
-        mapler.animate(sprite);
-      }, 3000);
+    
       const name = document.createElement('span');
       name.classList.add('name-tag');
       name.innerText = mapler.name;
       char.append(sprite);
       char.append(name);
-      addDrag(char, mapler);
-      addRemove(char, mapler);
-      addTest(char, mapler);
 
       mapler.char = char;
       mapler.sprite = sprite;
@@ -79,6 +72,11 @@ function fetchPose(mapler, info, faceEmote, pose) {
       char.style.bottom = ground + mapler.bottom + 'px';
       const {width} = char.getBoundingClientRect();
       char.style.left= Math.floor(Math.random() * (innerWidth - width)) + 'px';
+
+      setTimeout(() => {
+        char.classList.remove('spawn');
+        mapler.animate(sprite);
+      }, 3000);
     })
 }
 

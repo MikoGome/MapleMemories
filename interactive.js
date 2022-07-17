@@ -1,4 +1,6 @@
-function addDrag(target, mapler) {
+function addDrag(mapler) {
+  const target = mapler.char;
+
   let drag = null;
   let x = null;
   let y = null;
@@ -38,7 +40,6 @@ function addDrag(target, mapler) {
     if(!drag) return;
     if(event.changedTouches) {
       const touch = event.touches[touchIdx];
-      console.log(touchIdx);
       x2 = x - touch.pageX;
       y2 = y - touch.pageY;
       x = touch.pageX;
@@ -97,19 +98,19 @@ function addDrag(target, mapler) {
   target.addEventListener("touchcancel", handleMouseUp);
 }
 
-function addRemove(target, mapler) {
+function addRemove(mapler) {
+  const target = mapler.char;
   target.addEventListener("mousedown", (e) => {
     if(e.ctrlKey) mapler.logOut();
   })
 }
 
-function addTest(target, mapler) {
+function addTest(mapler) {
+  const target = mapler.char;
   document.addEventListener('keydown', (e) => {
     if(e.ctrlKey && e.key === 'q') {
-      console.log('walking')
       mapler.walk();
     } else if(e.ctrlKey && e.key === 'y') {
-      console.log('jumping');
       mapler.jump();
     }
   });
