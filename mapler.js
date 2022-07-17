@@ -228,7 +228,12 @@ class Mapler {
           this.rotation = 0;
           if(this.isJumping && this.bottom === ground) {
             this.isJumping = false;
-            this.changePose(this.justSpawn ? 'standingOneHanded' : ['alert', 'standingOneHanded', 'jumping']);
+            if(this.justSpawn) {
+              this.changePose('standingOneHanded');
+              this.justSpawn = false;
+            } else {
+              this.changePose(['alert', 'standingOneHanded', 'jumping']);
+            }
             this.jumpForce = 5;
           } else {
             this.changeBoth(['hit', 'angry', 'pain'], 'lyingDown');
@@ -263,7 +268,7 @@ class Mapler {
 
   logOut() {
     this.delife();
-    cancelAnimationFrame(this.animateRef);
     this.char.remove();
+    cancelAnimationFrame(this.animateRef);
   }
 }

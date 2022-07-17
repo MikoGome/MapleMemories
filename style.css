@@ -60,7 +60,7 @@
 }
 
 .spawn {
-  animation: spawn 1s ease-in;
+  animation: spawn 0.5s ease-in;
 }
 
 @keyframes spawn {

@@ -1,0 +1,73 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 360px;
+  width: 640px;
+  background-image: url('./static/login.jpg');
+  background-size: cover;
+  background-position: right;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#menu {
+  height: 100%;
+  width: 100%;
+  padding: 15px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: auto;
+  cursor: url('https://res.cloudinary.com/miko2/raw/upload/v1657492283/aero_arrow_nurzij.cur'), pointer;
+}
+
+button {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 30px;
+  cursor: url('https://res.cloudinary.com/miko2/raw/upload/v1657492283/aero_arrow_nurzij.cur'), pointer;
+}
+
+button:hover {
+  transition: transform 0.5s;
+  transform: scale(1.05);
+}
+
+.menu-item {
+  display: flex;
+  padding: 20px;
+  justify-content: space-between;
+  font-size: 12pt;
+}
+
+.online {
+  color: green;
+}
+
+.offline {
+  color: gray;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  /* background: #f1f1f1;  */
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 30px;
+  background: rgba(136, 136, 136, 0.5);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(85, 85, 85, 0.5); 
+}

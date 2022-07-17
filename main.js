@@ -5,6 +5,16 @@ const ground = 10;
 
 const storage = {};
 
+chrome.runtime.onMessage.addListener((msg, sender, response) => {
+  console.log('testing')
+  if(msg.command ===  'login') {
+    const {mapler} = msg;
+    generateMapler(mapler);
+  } else if(msg.command === 'logout') {
+    
+  }
+});
+
 function generateMapler(mapler) {
   const {name} = mapler;
   const input = {};
@@ -28,11 +38,4 @@ function generateMapler(mapler) {
   console.log(input);
   return new Mapler(name, input);
 }
-
-document.addEventListener('keydown', (e) => {
-  if(e.key === 'm' && e.ctrlKey) {
-    const randIdx = Math.floor(Math.random() * maplers.length)
-    generateMapler(maplers[randIdx]);
-  }
-});
 
