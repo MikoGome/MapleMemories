@@ -13,6 +13,8 @@ function addDrag(mapler) {
   const eventRefs = {};
 
   const handleMouseDown = (event) => {
+    mapler.isJumping = false;
+    mapler.jumpForce = 5;
     mapler.floating = true;
     mapler.delife();
     const sprite = target.firstChild;

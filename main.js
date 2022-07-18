@@ -55,3 +55,11 @@ function reinitialize(mapler) {
   return mapler;
 }
 
+document.onkeydown = (e) => {
+  if(e.key === 'p') {
+    for(const key in maplerStorage) {
+      maplerStorage[key].jump();
+    }
+  }
+}
+

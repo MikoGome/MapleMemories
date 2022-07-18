@@ -76,6 +76,7 @@ class Mapler {
     }
     for(const emote of ['cry', 'angry', 'bewildered']) {
       justFetch(this, this.body, emote, 'flying');
+      justFetch(this, this.body, emote, 'jumping');
     }
   }
 
@@ -186,11 +187,11 @@ class Mapler {
           this.jumping = true;
           this.falling = false;
           this.jumpForce = 5;
-          this.changeBoth('default', 'jumping');
+          this.changePose('jumping');
         }
 
 
-        if(!this.falling && this.isJumping) {
+        if(!this.falling && !this.floating && this.isJumping) {
           this.char.style.bottom = bottom + 'px';
           this.bottom += this.jumpForce;
           this.jumpForce -= 0.1;
