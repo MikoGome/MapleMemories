@@ -103,25 +103,3 @@ function addDrag(mapler) {
 
   return eventRefs;
 }
-
-function clearListeners() {
-  
-}
-
-function addRemove(mapler) {
-  const target = mapler.char;
-  target.addEventListener("mousedown", (e) => {
-    if(e.ctrlKey) mapler.logOut();
-  })
-}
-
-function addTest(mapler) {
-  const target = mapler.char;
-  document.addEventListener('keydown', (e) => {
-    if(e.ctrlKey && e.key === 'q') {
-      mapler.walk();
-    } else if(e.ctrlKey && e.key === 'y') {
-      mapler.jump();
-    }
-  });
-}

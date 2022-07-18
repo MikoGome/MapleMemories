@@ -217,9 +217,7 @@ class Mapler {
             if(this.justSpawn) {
               this.changePose('standingOneHanded');
               this.justSpawn = false;
-              this.eventRefs = addDrag(this);
-              addRemove(this);
-              addTest(this);  
+              this.eventRefs = addDrag(this); 
             } else {
               this.changePose(['alert', 'standingOneHanded', 'jumping']);
             }
@@ -270,7 +268,6 @@ class Mapler {
       this.char.removeEventListener(key, this.eventRefs[key]);
     }
     cancelAnimationFrame(this.animateRef);
-    console.log('this.spawnRef', this.spawnRef);
     clearTimeout(this.spawnRef);
   }
 }
