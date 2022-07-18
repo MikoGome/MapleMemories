@@ -1,3 +1,5 @@
+let fingersTotal = 0;
+
 function addDrag(mapler) {
   const target = mapler.char;
 
@@ -7,8 +9,6 @@ function addDrag(mapler) {
   let x2 = null;
   let y2 = null;
   let recoverRef = null;
-  
-  let touchIdx = null;
 
   const eventRefs = {};
 
@@ -24,8 +24,13 @@ function addDrag(mapler) {
     zIdx++;
     target.style.zIndex = zIdx;  
     if(event.changedTouches) {
-      if(touchIdx === null) touchIdx = event.touches.length - 1;
-      const touch = event.touches[touchIdx];
+      fingersTotal++;
+      let touch = null;
+      for(let i = 0; i < event.touches.length; i++) {
+        if(event.touches[i].target === mapler.sprite) {
+          touch = event.touches[i];
+        }
+      }
       x = touch.pageX;
       y = touch.pageY;
     } else {
@@ -41,7 +46,12 @@ function addDrag(mapler) {
   const handleMouseMove = (event) => {
     if(!drag) return;
     if(event.changedTouches) {
-      const touch = event.touches[touchIdx];
+      let touch = null;
+      for(let i = 0; i < event.touches.length; i++) {
+        if(event.touches[i].target === mapler.sprite) {
+          touch = event.touches[i];
+        }
+      }
       x2 = x - touch.pageX;
       y2 = y - touch.pageY;
       x = touch.pageX;
@@ -65,7 +75,7 @@ function addDrag(mapler) {
     sprite.classList.remove('transform-origin-center');
     sprite.classList.add('transform-origin-center');
     drag = null;
-    touchIdx = null;
+    // touchIdx = null;
 
     if(mapler.bottom < ground) {
       mapler.changeBoth(['default', 'smile', 'troubled', 'angry'], 'jumping')
