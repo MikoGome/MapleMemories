@@ -84,8 +84,14 @@ function addDrag(mapler) {
           sprite.onanimationend = null;
         }
         recoverRef = setTimeout(() => {
-          if(mapler.pose === 'flying') return;
+          if(mapler.pose === 'flying' || mapler.pose === 'jumping') return;
           mapler.changeBoth(undefined, 'alert'); 
+          makeAlive(mapler);
+        }, Math.floor(Math.random() * 5000) + 3000);
+        sprite.onload = null;
+      } else if(mapler.pose === 'jumping') {
+        recoverRef = setTimeout(() => {
+          if(mapler.pose === 'flying' || mapler.pose === 'jumping') return;
           makeAlive(mapler);
         }, Math.floor(Math.random() * 5000) + 3000);
         sprite.onload = null;

@@ -76,6 +76,8 @@ class Mapler {
     }
     for(const emote of ['cry', 'angry', 'bewildered']) {
       justFetch(this, this.body, emote, 'flying');
+    }
+    for(const emote of ['smile', 'troubled', 'angry']) {
       justFetch(this, this.body, emote, 'jumping');
     }
   }
@@ -187,7 +189,12 @@ class Mapler {
           this.jumping = true;
           this.falling = false;
           this.jumpForce = 5;
-          this.changePose('jumping');
+          const jumpEmote = ['smile', 'troubled', 'angry'];
+          if(jumpEmote.includes(this.faceEmote)) {
+            this.changePose('jumping');
+          } else {
+            this.changeBoth(jumpEmote, 'jumping');
+          }
         }
 
 

@@ -77,7 +77,7 @@ function justFetch(mapler, info, faceEmote, pose) {
   const fetchPoses = [];
   if(!mapler.content[faceEmote]) mapler.content[faceEmote] = {};
   const poseArr = mapler.content[faceEmote][pose] = [];
-  for(let i = 0; i < 4; i++) {
+  for(let i = 0; i < 3; i++) {
     body.faceEmote = faceEmote;
     body.pose = pose;
     body.poseFrame = i;
