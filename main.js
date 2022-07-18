@@ -54,12 +54,3 @@ function reinitialize(mapler) {
   document.body.append(mapler.char);
   return mapler;
 }
-
-document.onkeydown = (e) => {
-  if(e.key === 'p') {
-    for(const key in maplerStorage) {
-      maplerStorage[key].jump();
-    }
-  }
-}
-
