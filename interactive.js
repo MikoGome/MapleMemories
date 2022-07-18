@@ -66,8 +66,13 @@ function addDrag(mapler) {
     sprite.classList.add('transform-origin-center');
     drag = null;
     touchIdx = null;
-    
-    mapler.changeEmote(['cry', 'angry']);
+
+    if(mapler.bottom < ground) {
+      mapler.changeBoth(['default', 'smile', 'troubled', 'angry'], 'jumping')
+    } else {
+      mapler.changeEmote(['cry', 'angry']);
+    }
+
     mapler.falling = true;
     target.classList.remove('move-cursor');
     
@@ -90,6 +95,7 @@ function addDrag(mapler) {
         }, Math.floor(Math.random() * 5000) + 3000);
         sprite.onload = null;
       } else if(mapler.pose === 'jumping') {
+        sprite.classList.remove('transform-origin-center');
         recoverRef = setTimeout(() => {
           if(mapler.pose === 'flying' || mapler.pose === 'jumping') return;
           makeAlive(mapler);
