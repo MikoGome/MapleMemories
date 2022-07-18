@@ -2,6 +2,7 @@ function makeAlive(mapler) {
   if(mapler.lifeRef) return;
   mapler.lifeRef = setTimeout(() => {
     if(mapler.bottom > ground || mapler.pose === 'jumping' || mapler.pose === 'flying' || mapler.isJumping) {
+      mapler.lifeRef = null;
       makeAlive(mapler);
       return;
     }
