@@ -265,11 +265,12 @@ class Mapler {
     this.char.ontouchmove = null;
     this.char.ontouchend = null;
     this.char.ontouchcancel = null;
-    clearTimeout(this.spawnRef);
     this.spawnRef = null;
-    (this.eventRefs || []).forEach(e => {
-      this.char.removeEventListener(e);
-    });
+    for(const key in this.eventRefs) {
+      this.char.removeEventListener(key, this.eventRefs[key]);
+    }
     cancelAnimationFrame(this.animateRef);
+    console.log('this.spawnRef', this.spawnRef);
+    clearTimeout(this.spawnRef);
   }
 }

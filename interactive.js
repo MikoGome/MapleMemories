@@ -10,7 +10,7 @@ function addDrag(mapler) {
   
   let touchIdx = null;
 
-  const eventRefs = [];
+  const eventRefs = {};
 
   const handleMouseDown = (event) => {
     const sprite = target.firstChild;
@@ -90,14 +90,14 @@ function addDrag(mapler) {
     }
   }
   
-  eventRefs.push(target.addEventListener('mousedown', handleMouseDown));
-  eventRefs.push(target.addEventListener('touchstart', handleMouseDown));
+  eventRefs.mousedown = target.addEventListener('mousedown', handleMouseDown);
+  eventRefs.touchstart = target.addEventListener('touchstart', handleMouseDown);
   
-  eventRefs.push(target.addEventListener('touchmove', handleMouseMove));
+  eventRefs.touchmove = target.addEventListener('touchmove', handleMouseMove);
   
-  eventRefs.push(target.addEventListener('mouseup', handleMouseUp));
-  eventRefs.push(target.addEventListener('touchend', handleMouseUp)); 
-  eventRefs.push(target.addEventListener('touchcancel', handleMouseUp));
+  eventRefs.mouseup = target.addEventListener('mouseup', handleMouseUp);
+  eventRefs.touchend = target.addEventListener('touchend', handleMouseUp); 
+  eventRefs.touchcancel = target.addEventListener('touchcancel', handleMouseUp);
 
   return eventRefs;
 }
