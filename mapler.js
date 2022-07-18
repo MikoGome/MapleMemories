@@ -28,7 +28,6 @@ const poses = [
   'slashingBehind',
   'slashingFront',
   'slashingUpward',
-  'spinningSlash'
 ];
 
 const commonEmotes = [
