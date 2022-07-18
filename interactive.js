@@ -89,17 +89,23 @@ function addDrag(mapler) {
       }
     }
   }
+  eventRefs.mousedown = eventRefs.touchstart = handleMouseDown;
+  target.addEventListener('mousedown', handleMouseDown);
+  target.addEventListener('touchstart', handleMouseDown);
   
-  eventRefs.mousedown = target.addEventListener('mousedown', handleMouseDown);
-  eventRefs.touchstart = target.addEventListener('touchstart', handleMouseDown);
+  eventRefs.touchmove = handleMouseMove;
+  target.addEventListener('touchmove', handleMouseMove);
   
-  eventRefs.touchmove = target.addEventListener('touchmove', handleMouseMove);
-  
-  eventRefs.mouseup = target.addEventListener('mouseup', handleMouseUp);
-  eventRefs.touchend = target.addEventListener('touchend', handleMouseUp); 
-  eventRefs.touchcancel = target.addEventListener('touchcancel', handleMouseUp);
+  eventRefs.mouseup = eventRefs.touchend = eventRefs.touchcancel = handleMouseUp;
+  target.addEventListener('mouseup', handleMouseUp);
+  target.addEventListener('touchend', handleMouseUp); 
+  target.addEventListener('touchcancel', handleMouseUp);
 
   return eventRefs;
+}
+
+function clearListeners() {
+  
 }
 
 function addRemove(mapler) {
