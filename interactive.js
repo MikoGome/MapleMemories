@@ -13,6 +13,7 @@ function addDrag(mapler) {
   const eventRefs = {};
 
   const handleMouseDown = (event) => {
+    mapler.delife();
     const sprite = target.firstChild;
     clearTimeout(recoverRef);
     mapler.falling = false;
@@ -31,7 +32,6 @@ function addDrag(mapler) {
     }
     drag = target;
     target.classList.add('move-cursor');
-    mapler.delife();
     mapler.changeBoth(['cry', 'angry', 'bewildered'], 'flying');
   }
   
