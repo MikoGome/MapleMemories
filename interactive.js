@@ -83,6 +83,7 @@ function addDrag(mapler) {
         void sprite.offsetWidth;
         sprite.classList.add('damage');
         mapler.sprite.style.transform = null;
+        mapler.rotation = 0;
         sprite.onanimationend = (e) => {
           if(e.currentTarget !== e.target) return;
           sprite.classList.remove('damage');
@@ -96,6 +97,8 @@ function addDrag(mapler) {
         sprite.onload = null;
       } else if(mapler.pose === 'jumping') {
         sprite.classList.remove('transform-origin-center');
+        mapler.sprite.style.transform = null;
+        mapler.rotation = 0;
         recoverRef = setTimeout(() => {
           if(mapler.pose === 'flying' || mapler.pose === 'jumping') return;
           makeAlive(mapler);
