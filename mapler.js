@@ -180,7 +180,16 @@ class Mapler {
         }
         moveThen = now;
 
-        const bottom = parseInt(this.bottom);
+        const bottom = this.bottom;
+
+        if(!this.floating & this.bottom < ground) {
+          this.jumping = true;
+          this.falling = false;
+          this.jumpForce = 5;
+          this.changeBoth('default', 'jumping');
+        }
+
+
         if(!this.falling && this.isJumping) {
           this.char.style.bottom = bottom + 'px';
           this.bottom += this.jumpForce;

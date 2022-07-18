@@ -13,6 +13,7 @@ function addDrag(mapler) {
   const eventRefs = {};
 
   const handleMouseDown = (event) => {
+    mapler.floating = true;
     mapler.delife();
     const sprite = target.firstChild;
     clearTimeout(recoverRef);
@@ -56,6 +57,7 @@ function addDrag(mapler) {
   };
   
   const handleMouseUp = () => {
+    mapler.floating = false;
     document.onmousemove = null;
     const sprite = drag.firstChild;
     sprite.classList.remove('transform-origin-center');
