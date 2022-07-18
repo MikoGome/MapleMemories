@@ -10,8 +10,9 @@ function addDrag(mapler) {
   
   let touchIdx = null;
 
+  const eventRefs = [];
+
   const handleMouseDown = (event) => {
-    document.onmousemove = handleMouseMove;
     const sprite = target.firstChild;
     clearTimeout(recoverRef);
     mapler.falling = false;
@@ -24,6 +25,7 @@ function addDrag(mapler) {
       x = touch.pageX;
       y = touch.pageY;
     } else {
+      document.onmousemove = handleMouseMove;
       x = event.pageX;
       y = event.pageY;
     }
@@ -34,6 +36,7 @@ function addDrag(mapler) {
   }
   
   const handleMouseMove = (event) => {
+    console.log('move');
     if(!drag) return;
     if(event.changedTouches) {
       const touch = event.touches[touchIdx];
@@ -87,14 +90,16 @@ function addDrag(mapler) {
     }
   }
   
-  target.onmousedown = handleMouseDown;
-  target.ontouchstart = handleMouseDown;
+  eventRefs.push(target.addEventListener('mousedown', handleMouseDown));
+  eventRefs.push(target.addEventListener('touchstart', handleMouseDown));
   
-  target.ontouchmove = handleMouseMove;
+  eventRefs.push(target.addEventListener('touchmove', handleMouseMove));
   
-  target.onmouseup = handleMouseUp;
-  target.ontouchend = handleMouseUp;
-  target.ontouchcancel = handleMouseUp;
+  eventRefs.push(target.addEventListener('mouseup', handleMouseUp));
+  eventRefs.push(target.addEventListener('touchend', handleMouseUp)); 
+  eventRefs.push(target.addEventListener('touchcancel', handleMouseUp));
+
+  return eventRefs;
 }
 
 function addRemove(mapler) {
