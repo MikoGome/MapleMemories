@@ -36,7 +36,6 @@ function addDrag(mapler) {
   }
   
   const handleMouseMove = (event) => {
-    console.log('move');
     if(!drag) return;
     if(event.changedTouches) {
       const touch = event.touches[touchIdx];

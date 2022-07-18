@@ -1,5 +1,4 @@
 function fetchPose(mapler, info, faceEmote, pose) {
-  console.log('fetching');
   if(mapler.content[faceEmote] && mapler.content[faceEmote][pose]) {
     mapler.faceEmote = faceEmote;
     mapler.pose = pose;
