@@ -267,7 +267,6 @@ class Mapler {
 
   logOut() {
     this.delife();
-    this.char.remove();
     this.char.onmousedown = null;
     this.char.onmousemove = null;
     this.char.onmouseup = null;
@@ -281,5 +280,6 @@ class Mapler {
     }
     cancelAnimationFrame(this.animateRef);
     clearTimeout(this.spawnRef);
+    this.char.remove();
   }
 }
