@@ -23,6 +23,9 @@ chrome.runtime.onMessage.addListener((msg, sender, response) => {
 
 function generateMapler(mapler) {
   const {name} = mapler;
+  if(name in maplerStorage) {
+    return reinitialize(maplerStorage[name]);
+  }
   const input = {};
   input.skin = mapler.body.skin.id;
   input.faceId = mapler.body.face.id;
@@ -42,5 +45,13 @@ function generateMapler(mapler) {
   input.chairItemId = mapler.chair.id;
   input.chairFrame = mapler.chair.frame;
   return new Mapler(name, input);
+}
+
+function reinitialize(mapler) {
+  spawn(mapler);
+  const {faceEmote, pose} = mapler;
+  mapler.sprite.setAttribute('src', mapler.content[faceEmote][pose]);
+  document.body.append(mapler.char);
+  return mapler;
 }
 

@@ -1,4 +1,5 @@
 function fetchPose(mapler, info, faceEmote, pose) {
+  console.log('fetching');
   if(mapler.content[faceEmote] && mapler.content[faceEmote][pose]) {
     mapler.faceEmote = faceEmote;
     mapler.pose = pose;
@@ -55,28 +56,20 @@ function fetchPose(mapler, info, faceEmote, pose) {
       if(mapler.right) {
         sprite.classList.add('right-sprite');
       }
-      char.classList.add('spawn');
-    
+      
       const name = document.createElement('span');
       name.classList.add('name-tag');
       name.innerText = mapler.name;
       char.append(sprite);
       char.append(name);
-
+      
       mapler.char = char;
       mapler.sprite = sprite;
       mapler.ign = name;
-
+      
       document.body.append(char);
-      char.style.zIndex = zIdx;
-      char.style.bottom = ground + mapler.bottom + 'px';
-      const {width} = char.getBoundingClientRect();
-      char.style.left= Math.floor(Math.random() * (innerWidth - width)) + 'px';
 
-      setTimeout(() => {
-        char.classList.remove('spawn');
-        mapler.animate(sprite);
-      }, 3000);
+      spawn(mapler);
     })
 }
 
@@ -114,4 +107,31 @@ function justFetch(mapler, info, faceEmote, pose) {
         poseArr.push(URL.createObjectURL(blob));
       })
     });
+}
+
+function spawn (mapler) {
+  const {char, sprite} = mapler;
+  mapler.pose = 'jumping';
+  mapler.faceEmote = 'default';
+  char.classList.add('spawn');
+  char.style.zIndex = zIdx;
+  sprite.classList.remove('damage');
+  mapler.bottom = 137;
+
+  mapler.falling = true;
+  mapler.rotation = 0;
+  mapler.gravity = 0;
+  mapler.jumpForce = 0;
+  mapler.isJumping = true;
+
+  mapler.justSpawn = true;
+
+  char.style.bottom = ground + mapler.bottom + 'px';
+  const {width} = char.getBoundingClientRect();
+  char.style.left= Math.floor(Math.random() * (innerWidth - width)) + 'px';
+  mapler.spawnRef = setTimeout(() => {
+    char.classList.remove('spawn');
+    mapler.animate(sprite);
+    makeAlive(mapler);
+  }, 3000);
 }

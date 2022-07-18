@@ -11,6 +11,7 @@ function addDrag(mapler) {
   let touchIdx = null;
 
   const handleMouseDown = (event) => {
+    document.onmousemove = handleMouseMove;
     const sprite = target.firstChild;
     clearTimeout(recoverRef);
     mapler.falling = false;
@@ -29,13 +30,9 @@ function addDrag(mapler) {
     drag = target;
     target.classList.add('move-cursor');
     mapler.delife();
-    sprite.onload = () => {
-      sprite.classList.add('transform-origin-center');
-      sprite.onload = null;
-    };
     mapler.changeBoth(['cry', 'angry', 'bewildered'], 'flying');
   }
-
+  
   const handleMouseMove = (event) => {
     if(!drag) return;
     if(event.changedTouches) {
@@ -55,19 +52,21 @@ function addDrag(mapler) {
     mapler.bottom = innerHeight - ground - bottom;
     drag.style.bottom = `${innerHeight - (drag.offsetTop - y2) - height}px`;
   };
-
+  
   const handleMouseUp = () => {
+    document.onmousemove = null;
     const sprite = drag.firstChild;
+    sprite.classList.remove('transform-origin-center');
+    sprite.classList.add('transform-origin-center');
     drag = null;
     touchIdx = null;
-
+    
     mapler.changeEmote(['cry', 'angry']);
     mapler.falling = true;
     target.classList.remove('move-cursor');
-
+    
     sprite.onload = () => {
       if(mapler.pose === 'lyingDown') {
-        sprite.onload = null;
         sprite.classList.remove('transform-origin-center');
         sprite.classList.remove('damage');
         void sprite.offsetWidth;
@@ -83,19 +82,19 @@ function addDrag(mapler) {
           mapler.changeBoth(undefined, 'alert'); 
           makeAlive(mapler);
         }, Math.floor(Math.random() * 5000) + 3000);
+        sprite.onload = null;
       }
     }
   }
-
-  target.addEventListener("mousedown", handleMouseDown);
-  target.addEventListener("touchstart", handleMouseDown);
   
-  target.addEventListener("mousemove", handleMouseMove);
-  target.addEventListener("touchmove", handleMouseMove);
-
-  target.addEventListener("mouseup", handleMouseUp);
-  target.addEventListener("touchend", handleMouseUp);
-  target.addEventListener("touchcancel", handleMouseUp);
+  target.onmousedown = handleMouseDown;
+  target.ontouchstart = handleMouseDown;
+  
+  target.ontouchmove = handleMouseMove;
+  
+  target.onmouseup = handleMouseUp;
+  target.ontouchend = handleMouseUp;
+  target.ontouchcancel = handleMouseUp;
 }
 
 function addRemove(mapler) {

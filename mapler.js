@@ -70,16 +70,6 @@ class Mapler {
 
     this.animateRef = null;
 
-    this.falling = true;
-    this.rotation = 0;
-    this.gravity = 0;
-    this.bottom = 137;
-    this.jumpForce = 0;
-    this.isJumping = true;
-
-    this.justSpawn = true;
-
-
     fetchPose(this, this.body, 'default', 'jumping');
     justFetch(this, this.body, 'default', 'standingOneHanded');
     for(const emote of ['hit', 'angry', 'pain']) {
@@ -88,7 +78,6 @@ class Mapler {
     for(const emote of ['cry', 'angry', 'bewildered']) {
       justFetch(this, this.body, emote, 'flying');
     }
-    makeAlive(this);
   }
 
   changePose(pose) {
@@ -270,6 +259,15 @@ class Mapler {
   logOut() {
     this.delife();
     this.char.remove();
+    this.char.onmousedown = null;
+    this.char.onmousemove = null;
+    this.char.onmouseup = null;
+    this.char.ontouchstart = null;
+    this.char.ontouchmove = null;
+    this.char.ontouchend = null;
+    this.char.ontouchcancel = null;
+    clearTimeout(this.spawnRef);
+    this.spawnRef = null;
     cancelAnimationFrame(this.animateRef);
   }
 }
